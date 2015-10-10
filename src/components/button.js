@@ -1,23 +1,28 @@
 'use strict';
 
-var React = require('react-native');
-var { StyleSheet, Text, TouchableHighlight } = React;
+import React from 'react-native';
 
-var colors = require('./colors');
+import {
+  StyleSheet,
+  Text,
+  TouchableHighlight
+} from 'react-native';
 
-var Button = React.createClass({
+import colors from './colors';
+
+class Button extends React.Component {
 
   getInitialState () {
     return { active: false };
-  },
+  }
 
   _onHighlight () {
     this.setState({ active: true });
-  },
+  }
 
   _onUnhighlight () {
     this.setState({ active: false });
-  },
+  }
 
   render () {
 
@@ -37,9 +42,9 @@ var Button = React.createClass({
     );
   }
 
-});
+}
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   button: {
     height: 40
   },

@@ -1,15 +1,17 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React from 'react-native';
+
+import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
-} = React;
+} from 'react-native';
 
-var furtive = React.createClass({
-  render: function() {
+class Furtive extends React.Component {
+
+  render () {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -24,9 +26,10 @@ var furtive = React.createClass({
       </View>
     );
   }
-});
 
-var styles = StyleSheet.create({
+}
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -45,4 +48,4 @@ var styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('furtive', () => furtive);
+AppRegistry.registerComponent('furtive', () => Furtive);

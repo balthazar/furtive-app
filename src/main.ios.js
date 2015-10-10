@@ -1,42 +1,17 @@
 'use strict';
 
-var React = require('react-native');
-var Button = require('./components/button');
+import React from 'react-native';
 
-var {
+import {
   AppRegistry,
   StyleSheet,
+  Text,
   View,
-  Text, TextInput
-} = React;
+} from 'react-native';
 
-var furtive = React.createClass({
+import Button from './components/button';
 
-  getInitialState () {
-    return {
-      username: '',
-      password: ''
-    };
-  },
-
-  connect () {
-
-    fetch('http://localhost:3000/users', {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'post',
-      body: JSON.stringify({ name: this.state.username, pass: this.state.password })
-    })
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.warn(error);
-    });
-
-  },
+class Furtive extends React.Component {
 
   render () {
 
@@ -67,11 +42,12 @@ var furtive = React.createClass({
 
       </View>
     );
+
   }
 
-});
+}
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -94,4 +70,4 @@ var styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('furtive', () => furtive);
+AppRegistry.registerComponent('furtive', () => Furtive);

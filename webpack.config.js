@@ -31,8 +31,7 @@ module.exports = {
   resolve: { extensions: ['', '.js', '.es6'] },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.HotModuleReplacementPlugin()
   ]
 
 };
