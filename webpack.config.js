@@ -25,6 +25,10 @@ module.exports = {
       loaders: [
         'babel?stage=0&optional=runtime'
       ]
+    }, {
+      test: /react-native-router\/.*.js$/,
+      exclude: /react-native-router\/node_modules/,
+      loaders: ['babel']
     }]
   },
 

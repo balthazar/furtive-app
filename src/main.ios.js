@@ -7,14 +7,37 @@ import {
   StyleSheet,
   Text,
   View,
+  TextInput
 } from 'react-native';
 
-import Button from './components/button';
+import Router from 'react-native-router';
 
-class Furtive extends React.Component {
+import Button from './components/ui/Button';
+
+class ListPage extends React.Component {
+  render () {
+    return (
+      <View><Text>coucou</Text></View>
+    );
+  }
+}
+
+class MainPage extends React.Component {
+
+  componentWillMount () {
+    this.setState({
+      username: ''
+    });
+  }
+
+  next () {
+    this.props.toRoute({
+      name: 'TEST',
+      component: ListPage
+    });
+  }
 
   render () {
-
     return (
       <View style={ styles.container }>
 
@@ -25,24 +48,26 @@ class Furtive extends React.Component {
           <TextInput
             style={ [styles.input] }
             onChangeText={ (username) => this.setState({ username }) }
-            placeholder="username [a-Z0-9]"
+            placeholder="username"
             value={ this.state.username }
           />
-          <TextInput
-            style={ [styles.input, styles.margedTop] }
-            secureTextEntry={ true }
-            placeholder="password [a-Z0-9]"
-            onChangeText={ (password) => this.setState({ password }) }
-            value={ this.state.password }
-          />
-          <Button onPress={ this.connect } style={ [styles.xlMargedTop] }>
+          <Button onPress={ ::this.next } style={ [styles.xlMargedTop] }>
             Submit
           </Button>
         </View>
 
       </View>
     );
+  }
 
+}
+
+class Furtive extends React.Component {
+
+  render () {
+    return (
+      <Router firstRoute={{name: 'Furtive', component: MainPage}} />
+    );
   }
 
 }

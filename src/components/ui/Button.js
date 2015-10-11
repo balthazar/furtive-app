@@ -8,12 +8,12 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-import colors from './colors';
+import colors from '../colors';
 
 class Button extends React.Component {
 
-  getInitialState () {
-    return { active: false };
+  componentWillMount () {
+    this.setState({ active: false });
   }
 
   _onHighlight () {
@@ -24,6 +24,8 @@ class Button extends React.Component {
     this.setState({ active: false });
   }
 
+  _noop () {}
+
   render () {
 
     var colorStyle = {
@@ -32,9 +34,9 @@ class Button extends React.Component {
 
     return (
       <TouchableHighlight
-        onHideUnderlay={ this._onUnhighlight }
-        onPress={ this.props.onPress }
-        onShowUnderlay={ this._onHighlight }
+        onHideUnderlay={ ::this._onUnhighlight }
+        onPress={ this.props.onPress ? ::this.props.onPress : ::this._noop }
+        onShowUnderlay={ ::this._onHighlight }
         style={ [styles.button, this.props.style] }
         underlayColor="transparent">
           <Text style={ [styles.buttonText, colorStyle] }>{ this.props.children }</Text>
