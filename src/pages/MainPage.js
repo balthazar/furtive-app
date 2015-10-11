@@ -20,19 +20,18 @@ export default class MainPage extends React.Component {
 
   render () {
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
 
         <View>
-          <Text style={ styles.welcome }>
-            Hello. { '\n' }
+          <Text style={styles.welcome}>
+            Hello. {'\n'}
           </Text>
-          <TextInput
-            style={ [styles.input] }
-            onChangeText={ (username) => this.setState({ username }) }
-            placeholder="username"
-            value={ this.state.username }
+          <TextInput style={[styles.input]}
+            onChangeText={username => this.setState({ username })}
+            placeholder='username'
+            value={this.state.username}
           />
-          <Button onPress={ ::this.next } style={ [styles.xlMargedTop] }>
+          <Button onPress={::this.next} style={[styles.xlMargedTop]}>
             Submit
           </Button>
         </View>
