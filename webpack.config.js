@@ -26,13 +26,18 @@ module.exports = {
         'babel?stage=0&optional=runtime'
       ]
     }, {
-      test: /react-native-router\/.*.js$/,
-      exclude: /react-native-router\/node_modules/,
-      loaders: ['babel']
+      test: /\.js$/,
+      exclude: /node_modules\/.*\/node_modules/,
+      include: [
+        path.resolve(__dirname, 'node_modules/react-native-navbar'),
+        path.resolve(__dirname, 'node_modules/react-native-vector-icons'),
+        path.resolve(__dirname, 'node_modules/react-native-spinkit')
+      ],
+      loader: 'babel?stage=0'
     }]
   },
 
-  resolve: { extensions: ['', '.js', '.es6'] },
+  resolve: { extensions: ['', '.js'] },
 
   plugins: [
     new webpack.HotModuleReplacementPlugin()

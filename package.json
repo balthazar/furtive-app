@@ -9,8 +9,12 @@
     "old": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
+    "alt": "^0.17.4",
+    "react": "^0.14.0",
     "react-native": "^0.12.0",
-    "react-native-router": "^0.2.1"
+    "react-native-navbar": "^0.8.2",
+    "react-native-spinkit": "0.0.5",
+    "react-native-vector-icons": "^0.8.2"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.3",

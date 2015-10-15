@@ -1,20 +1,41 @@
 'use strict';
 
-import React, { View, Text, TextInput, StyleSheet } from 'react-native';
+import React, {
+  View,
+  ListView,
+  Text,
+  StyleSheet
+} from 'react-native';
 
-import ListPage from './ListPage';
-import Button from '../components/ui/Button';
+import { HostStore } from '../stores';
+import { ReloadButton, Button } from '../components/ui';
 
 export default class MainPage extends React.Component {
 
-  componentWillMount () {
-    this.setState({ username: '' });
+  constructor () {
+    super();
+
+    this.state = HostStore.getState();
+
+    let lv = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+    });
+
+    this.state.dataSource = lv.cloneWithRows(this.state.hosts);
   }
 
-  next () {
-    this.props.toRoute({
-      name: 'TEST',
-      component: ListPage
+  componentDidMount () {
+    HostStore.listen(this.onChange.bind(this));
+  }
+
+  componentWillUnMount () {
+    HostStore.unlisten(this.onChange.bind(this));
+  }
+
+  onChange (state) {
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(state.hosts),
+      hosts: state.hosts
     });
   }
 
@@ -22,19 +43,9 @@ export default class MainPage extends React.Component {
     return (
       <View style={styles.container}>
 
-        <View>
-          <Text style={styles.welcome}>
-            Hello. {'\n'}
-          </Text>
-          <TextInput style={[styles.input]}
-            onChangeText={username => this.setState({ username })}
-            placeholder='username'
-            value={this.state.username}
-          />
-          <Button onPress={::this.next} style={[styles.xlMargedTop]}>
-            Submit
-          </Button>
-        </View>
+        <ReloadButton/>
+
+        <ListView renderRow={(data) => <Text>{data}</Text>} dataSource={this.state.dataSource}></ListView>
 
       </View>
     );

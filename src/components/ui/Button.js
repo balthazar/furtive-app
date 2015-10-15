@@ -10,7 +10,7 @@ import {
 
 import colors from '../colors';
 
-class Button extends React.Component {
+export default class Button extends React.Component {
 
   componentWillMount () {
     this.setState({ active: false });
@@ -54,5 +54,3 @@ const styles = StyleSheet.create({
     fontSize: 18
   }
 });
-
-module.exports = Button;
