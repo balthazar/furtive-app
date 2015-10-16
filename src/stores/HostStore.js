@@ -2,21 +2,21 @@
 
 import alt from '../alt';
 import { HostActions } from '../actions';
+import { HostSource } from '../sources';
 
 class HostStore {
 
   constructor () {
-    this.bindListeners({
-      updateHosts: HostActions.updateHosts
-    });
+    this.state = { hosts: [] };
+    this.registerAsync(HostSource);
 
-    this.state = {
-      hosts: ['10.0.0.0']
-    };
+    this.bindListeners({
+      updateHosts: HostActions.successGetHosts
+    });
   }
 
   updateHosts (hosts) {
-    this.setState({ hosts });
+    this.setState({ hosts: hosts ? hosts : [] });
   }
 
 }

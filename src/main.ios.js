@@ -4,8 +4,14 @@ import React, { AppRegistry, Navigator, View, Text } from 'react-native';
 
 import { MainPage } from './pages';
 import { NavBar } from './components/ui';
+import { HostStore } from './stores';
 
 class Furtive extends React.Component {
+
+  constructor (props) {
+    super(props);
+    HostStore.getHosts();
+  }
 
   renderScene (route, navigator) {
     const Component = route.component;
