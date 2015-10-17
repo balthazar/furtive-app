@@ -7,8 +7,12 @@ import React, {
   StyleSheet
 } from 'react-native';
 
+import q from 'q';
+import Refreshable from 'react-native-refreshable-listview';
+
 import { HostStore } from '../stores';
-import { ReloadButton, Button } from '../components/ui';
+import colors from '../components/colors';
+import { RefreshIndicator, HostItem } from '../components/ui';
 
 export default class MainPage extends React.Component {
 
@@ -39,13 +43,21 @@ export default class MainPage extends React.Component {
     });
   }
 
+  reloadHosts () {
+    console.log('TODO reload hosts here.');
+    return q.delay(3e3);
+  }
+
   render () {
     return (
       <View style={styles.container}>
 
-        <ReloadButton/>
-
-        <ListView renderRow={(data) => <Text>{data}</Text>} dataSource={this.state.dataSource}></ListView>
+        <Refreshable
+          style={styles.list}
+          dataSource={this.state.dataSource}
+          renderRow={(data) => <HostItem data={data}/>}
+          loadData={this.reloadHosts}
+          refreshingIndictatorComponent={RefreshIndicator}/>
 
       </View>
     );
@@ -56,22 +68,11 @@ export default class MainPage extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    alignItems: 'stretch',
+    backgroundColor: colors.base03
   },
-  margedTop: {
-    marginTop: 10
-  },
-  xlMargedTop: {
-    marginTop: 20
-  },
-  input: {
-    height: 40,
-    width: 200
-  },
-  welcome: {
-    fontSize: 25
+  list: {
+    paddingLeft: 0
   }
 });

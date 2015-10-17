@@ -14,13 +14,19 @@ export default {
   getHosts: {
 
     remote () {
+
       scan.scan();
 
-      scan.on('start', function () {
-        console.log('Scanning started.');
-      });
+      scan.on('start', () => { console.log('[Scanning] started.'); });
+      scan.on('stop', () => { console.log('[Scanning] stopped.'); });
 
-      return q();
+      // Mocking data.
+      return q([
+        '192.168.0.3',
+        '192.168.0.4',
+        '192.168.0.5',
+        '192.168.0.7'
+      ]);
     },
 
     loading: HostActions.loadingHosts,

@@ -2,12 +2,14 @@
 
 import NavBar from './NavBar';
 import Button from './Button';
-import ReloadButton from './ReloadButton';
+import RefreshIndicator from './RefreshIndicator';
+import HostItem from './HostItem';
 
 export default {
 
   NavBar,
   Button,
-  ReloadButton
+  RefreshIndicator,
+  HostItem
 
 };
