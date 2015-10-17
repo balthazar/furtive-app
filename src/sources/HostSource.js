@@ -7,14 +7,19 @@ import Scanner from 'react-native-network-scan';
 
 import { HostActions } from '../actions';
 
+const scan = new Scanner();
+
 export default {
 
   getHosts: {
 
     remote () {
-      Scanner.scan(function (res) {
-        console.log(res);
+      scan.scan();
+
+      scan.on('start', function () {
+        console.log('Scanning started.');
       });
+
       return q();
     },
 

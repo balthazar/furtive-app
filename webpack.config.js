@@ -31,7 +31,8 @@ module.exports = {
       include: [
         path.resolve(__dirname, 'node_modules/react-native-navbar'),
         path.resolve(__dirname, 'node_modules/react-native-vector-icons'),
-        path.resolve(__dirname, 'node_modules/react-native-spinkit')
+        path.resolve(__dirname, 'node_modules/react-native-spinkit'),
+        path.resolve(__dirname, 'node_modules/react-native-network-scan')
       ],
       loader: 'babel?stage=0'
     }]
