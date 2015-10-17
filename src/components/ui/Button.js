@@ -35,7 +35,7 @@ export default class Button extends React.Component {
     return (
       <TouchableHighlight
         onHideUnderlay={ ::this._onUnhighlight }
-        onPress={ this.props.onPress ? ::this.props.onPress : ::this._noop }
+        onPress={ this.props.onPress ? ::this.props.onPress : this._noop }
         onShowUnderlay={ ::this._onHighlight }
         style={ [styles.button, this.props.style] }
         underlayColor="transparent">

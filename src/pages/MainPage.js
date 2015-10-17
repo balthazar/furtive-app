@@ -53,10 +53,9 @@ export default class MainPage extends React.Component {
       <View style={styles.container}>
 
         <Refreshable
-          style={styles.list}
           dataSource={this.state.dataSource}
           renderRow={(data) => <HostItem data={data}/>}
-          loadData={this.reloadHosts}
+          loadData={::this.reloadHosts}
           refreshingIndictatorComponent={RefreshIndicator}/>
 
       </View>
@@ -71,8 +70,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
     backgroundColor: colors.base03
-  },
-  list: {
-    paddingLeft: 0
   }
 });
