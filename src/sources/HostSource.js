@@ -3,7 +3,7 @@
 import q from 'q';
 import async from 'async';
 import { AsyncStorage } from 'react-native';
-import Scanner from 'react-native-network-scan';
+import Scanner from 'react-native-bonjour';
 
 import { HostActions } from '../actions';
 
