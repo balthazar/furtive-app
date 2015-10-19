@@ -9,8 +9,10 @@ import React, {
 
 import q from 'q';
 import Refreshable from 'react-native-refreshable-listview';
+import Bonjour from 'react-native-bonjour';
 
 import { HostStore } from '../stores';
+import { HostActions } from '../actions';
 import colors from '../components/colors';
 import { RefreshIndicator, HostItem } from '../components/ui';
 
@@ -23,6 +25,13 @@ export default class MainPage extends React.Component {
 
     let lv = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
+    });
+
+    this._bonjour = new Bonjour();
+    this._bonjour.scan('furtive');
+
+    this._bonjour.on('update', () => {
+      HostActions.updateHosts(this._bonjour.getServices());
     });
 
     this.state.dataSource = lv.cloneWithRows(this.state.hosts);
@@ -44,8 +53,7 @@ export default class MainPage extends React.Component {
   }
 
   reloadHosts () {
-    console.log('TODO reload hosts here.');
-    return q.delay(3e3);
+    HostActions.updateHosts(this._bonjour.getServices());
   }
 
   render () {
