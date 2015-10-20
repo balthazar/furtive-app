@@ -13,7 +13,6 @@ import Bonjour from 'react-native-bonjour';
 
 import { HostStore } from '../stores';
 import { HostActions } from '../actions';
-import colors from '../components/colors';
 import { RefreshIndicator, HostItem } from '../components/ui';
 
 export default class MainPage extends React.Component {
@@ -62,7 +61,7 @@ export default class MainPage extends React.Component {
 
         <Refreshable
           dataSource={this.state.dataSource}
-          renderRow={(data) => <HostItem data={data}/>}
+          renderRow={(data) => <HostItem navigator={this.props.navigator} hostname={data}/>}
           loadData={::this.reloadHosts}
           refreshingIndictatorComponent={RefreshIndicator}/>
 
@@ -76,7 +75,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'stretch',
-    backgroundColor: colors.base03
+    alignItems: 'stretch'
   }
 });

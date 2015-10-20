@@ -1,25 +1,25 @@
 'use strict';
 
 import React, { AppRegistry, Navigator, View, Text } from 'react-native';
+import NavBar from 'react-native-navbar';
 
+import colors from './components/colors';
 import { MainPage } from './pages';
-import { NavBar } from './components/ui';
 
 class Furtive extends React.Component {
 
   renderScene (route, navigator) {
     const Component = route.component;
-    let nav = route.navigationBar;
 
-    if (nav) {
-      nav = React.addons.cloneWithProps(nav, {
-        navigator, route
-      });
-    }
+    if (route.param) { route.param = route.param.replace(/ /g, '-'); }
 
     return (
       <View style={{ flex: 1 }}>
-        {nav}
+        <NavBar title={route.title || 'Furtive'}
+          route={route}
+          navigator={navigator}
+          backgroundStyle={{backgroundColor:colors.base02}}
+          titleColor={colors.base0}/>
         <Component navigator={navigator} route={route} />
       </View>
     );
@@ -28,8 +28,9 @@ class Furtive extends React.Component {
   render () {
     return (
       <Navigator
+        style={{backgroundColor:colors.base03}}
         renderScene={this.renderScene}
-        initialRoute={{component: MainPage, navigationBar: NavBar}}>
+        initialRoute={{component: MainPage}}>
       </Navigator>
     );
   }

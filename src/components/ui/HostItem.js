@@ -11,45 +11,29 @@ import {
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import HostPage from '../../pages/HostPage';
 import colors from '../colors';
 
 export default class HostItem extends React.Component {
 
-  componentWillMount () {
-    this.setState({ open: false });
-  }
-
-  toggle () {
-    this.setState({ open: !this.state.open });
+  open () {
+    this.props.navigator.push({
+      title: this.props.hostname,
+      param: this.props.hostname,
+      component: HostPage
+    });
   }
 
   render () {
     return (
       <View style={style.container}>
 
-        {this.state.open && (
-          <TouchableHighlight
-            onPress={::this.toggle}
-            style={style.clickable}
-            underlayColor={colors.base02}>
-            <View>
-              <Text style={style.data}>{this.props.data}</Text>
-              <View style={style.buttons}>
-                <Icon name='flash-off' style={{marginRight:10}} size={15} color={colors.base1} />
-                <Icon name='play' size={15} color={colors.base1} />
-              </View>
-            </View>
-          </TouchableHighlight>
-        )}
-
-        {!this.state.open && (
-          <TouchableHighlight
-            onPress={::this.toggle}
-            style={style.clickable}
-            underlayColor={colors.base02}>
-            <Text style={style.data}>{this.props.data}</Text>
-          </TouchableHighlight>
-        )}
+        <TouchableHighlight
+          onPress={::this.open}
+          style={style.clickable}
+          underlayColor='transparent'>
+          <Text style={style.hostname}>{this.props.hostname}</Text>
+        </TouchableHighlight>
 
       </View>
     );
@@ -74,7 +58,7 @@ const style = StyleSheet.create({
     marginTop: 10
   },
 
-  data: {
+  hostname: {
     color: colors.base0
   }
 

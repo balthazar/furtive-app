@@ -1,9 +1,9 @@
 'use strict';
 
 import MainPage from './MainPage';
-import ListPage from './ListPage';
+import HostPage from './HostPage';
 
 export default {
   MainPage,
-  ListPage
+  HostPage
 };
