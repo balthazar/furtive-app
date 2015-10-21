@@ -16,6 +16,18 @@ class HostActions {
     };
   }
 
+  say (name, str) {
+    return (dispatch) => {
+      superagent.put(`http://${name}.local:3000/api/system/say`)
+        .send({ str })
+        .accept('json')
+        .end((err, res) => {
+          if (err) { return ; }
+          dispatch({ name, data: res.body });
+        });
+    };
+  }
+
   fetchMpvInfos (name) {
     superagent.get(`http://${name}.local:3000/api/mpv/infos`)
       .accept('json')

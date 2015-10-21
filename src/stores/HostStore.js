@@ -21,8 +21,8 @@ class HostStore {
     this.setState({ hosts });
   }
 
-  getInfos ({ name, data }) {
-    this.setState({ currentHost: { name, data } });
+  getInfos ({ data }) {
+    this.setState({ currentHost: data });
   }
 
 }

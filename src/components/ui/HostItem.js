@@ -59,7 +59,7 @@ const style = StyleSheet.create({
   },
 
   hostname: {
-    color: colors.base0
+    color: colors.base2
   }
 
 });

@@ -7,10 +7,10 @@ import React, {
   StyleSheet
 } from 'react-native';
 
-import q from 'q';
 import Refreshable from 'react-native-refreshable-listview';
 import Bonjour from 'react-native-bonjour';
 
+import colors from '../components/colors';
 import { HostStore } from '../stores';
 import { HostActions } from '../actions';
 import { RefreshIndicator, HostItem } from '../components/ui';
@@ -56,8 +56,15 @@ export default class MainPage extends React.Component {
   }
 
   render () {
+
+    const hasHost = !!this.state.dataSource._cachedRowCount;
+
     return (
       <View style={styles.container}>
+
+        {!hasHost && (
+          <Text style={styles.text}>No host found.</Text>
+        )}
 
         <Refreshable
           dataSource={this.state.dataSource}
@@ -76,5 +83,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch'
+  },
+  text: {
+    color: colors.base2,
+    textAlign: 'center',
+    marginTop: 10
   }
 });
