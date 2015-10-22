@@ -4,7 +4,7 @@ import alt from '../alt';
 
 class ErrorActions {
 
-  new (errorMessage) {
+  new (errorMessage) {
     return errorMessage;
   }
 

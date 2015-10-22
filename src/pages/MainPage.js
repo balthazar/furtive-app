@@ -22,18 +22,23 @@ export default class MainPage extends React.Component {
 
     this.state = HostStore.getState();
 
-    let lv = new ListView.DataSource({
+    const lv = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
 
     this._bonjour = new Bonjour();
     this._bonjour.scan('furtive');
 
+    // Start the bonjour scan using the furtive protocol
     this._bonjour.on('update', () => {
       HostActions.updateHosts(this._bonjour.getServices());
     });
 
-    this.state.dataSource = lv.cloneWithRows(this.state.hosts);
+    // Might have to be changed
+    this.state = {
+      dataSource: lv.cloneWithRows(this.state.hosts),
+      hosts: this.state.hosts
+    };
   }
 
   componentDidMount () {
@@ -44,6 +49,9 @@ export default class MainPage extends React.Component {
     HostStore.unlisten(this.onChange.bind(this));
   }
 
+  /**
+   * When the list gets changed
+   */
   onChange (state) {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(state.hosts),
@@ -51,6 +59,9 @@ export default class MainPage extends React.Component {
     });
   }
 
+  /**
+   * Reload the list manually
+   */
   reloadHosts () {
     HostActions.updateHosts(this._bonjour.getServices());
   }
@@ -68,7 +79,7 @@ export default class MainPage extends React.Component {
 
         <Refreshable
           dataSource={this.state.dataSource}
-          renderRow={(data) => <HostItem navigator={this.props.navigator} hostname={data}/>}
+          renderRow={data => <HostItem navigator={this.props.navigator} hostname={data}/>}
           loadData={::this.reloadHosts}
           refreshingIndictatorComponent={RefreshIndicator}/>
 

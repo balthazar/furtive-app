@@ -8,7 +8,7 @@ import ErrorActions from './ErrorActions';
 class HostActions {
 
   getInfos (name) {
-    return (dispatch) => {
+    return dispatch => {
       superagent.get(`http://${name}.local:3000/api/system/infos`)
         .accept('json')
         .end((err, res) => {
@@ -19,7 +19,7 @@ class HostActions {
   }
 
   say (name, str) {
-    return (dispatch) => {
+    return dispatch => {
       superagent.put(`http://${name}.local:3000/api/system/say`)
         .send({ str })
         .accept('json')
@@ -31,7 +31,7 @@ class HostActions {
   }
 
   shutdown (name) {
-    return (dispatch) => {
+    return dispatch => {
       superagent.put(`http://${name}.local:3000/api/system/shutdown`)
         .accept('json')
         .end((err, res) => {
@@ -42,7 +42,7 @@ class HostActions {
   }
 
   mute (name) {
-    return (dispatch) => {
+    return dispatch => {
       superagent.put(`http://${name}.local:3000/api/system/mute`)
         .accept('json')
         .end((err, res) => {
@@ -52,6 +52,7 @@ class HostActions {
     };
   }
 
+  /*
   fetchMpvInfos (name) {
     superagent.get(`http://${name}.local:3000/api/mpv/infos`)
       .accept('json')
@@ -69,6 +70,7 @@ class HostActions {
       .accept('json')
       .end((err, res) => { console.log(err, res); });
   }
+  */
 
   updateHosts (hosts) {
     return hosts;

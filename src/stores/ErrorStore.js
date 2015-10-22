@@ -8,7 +8,7 @@ class ErrorStore {
   constructor () {
     this.state = {
       errorMessage: null
-    }
+    };
 
     this.bindListeners({
       new: ErrorActions.new,
