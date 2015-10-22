@@ -41,6 +41,17 @@ class HostActions {
     };
   }
 
+  mute (name) {
+    return (dispatch) => {
+      superagent.put(`http://${name}.local:3000/api/system/mute`)
+        .accept('json')
+        .end((err, res) => {
+          if (err) { return ErrorActions.new(res.body.message); }
+          dispatch({ name, data: res.body });
+        });
+    };
+  }
+
   fetchMpvInfos (name) {
     superagent.get(`http://${name}.local:3000/api/mpv/infos`)
       .accept('json')

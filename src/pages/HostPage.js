@@ -8,6 +8,7 @@ import React, {
   AlertIOS
 } from 'react-native';
 
+import _ from 'lodash';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { HostStore } from '../stores';
@@ -46,6 +47,10 @@ export default class HostPage extends React.Component {
     HostActions.say(this.state.hostname, str);
   }
 
+  mute () {
+    HostActions.mute(this.state.hostname);
+  }
+
   promptSay () {
     AlertIOS.prompt('Say something', '', [
       { text: 'Cancel', },
@@ -64,6 +69,12 @@ export default class HostPage extends React.Component {
               <TouchableHighlight onPress={::this.shutdown} underlayColor='transparent' style={style.button}>
                 <Icon name='flash-off' size={20} color={colors.base2}/>
               </TouchableHighlight>
+
+              {_.includes(['Darwin', 'Linux'], this.state.host.system) && (
+                <TouchableHighlight onPress={::this.mute} underlayColor='transparent' style={style.button}>
+                  <Icon name='volume-mute' size={20} color={colors.base2}/>
+                </TouchableHighlight>
+              )}
 
               {this.state.host.system === 'Darwin' && (
                 <TouchableHighlight onPress={::this.promptSay} underlayColor='transparent' style={style.button}>
