@@ -3,6 +3,8 @@
 import superagent from 'superagent';
 import alt from '../alt';
 
+import ErrorActions from './ErrorActions';
+
 class HostActions {
 
   getInfos (name) {
@@ -10,7 +12,7 @@ class HostActions {
       superagent.get(`http://${name}.local:3000/api/system/infos`)
         .accept('json')
         .end((err, res) => {
-          if (err) { return ; }
+          if (err) { return ErrorActions.new(res.body.message); }
           dispatch({ name, data: res.body });
         });
     };
@@ -22,7 +24,18 @@ class HostActions {
         .send({ str })
         .accept('json')
         .end((err, res) => {
-          if (err) { return ; }
+          if (err) { return ErrorActions.new(res.body.message); }
+          dispatch({ name, data: res.body });
+        });
+    };
+  }
+
+  shutdown (name) {
+    return (dispatch) => {
+      superagent.put(`http://${name}.local:3000/api/system/shutdown`)
+        .accept('json')
+        .end((err, res) => {
+          if (err) { return ErrorActions.new(res.body.message); }
           dispatch({ name, data: res.body });
         });
     };
@@ -42,12 +55,6 @@ class HostActions {
 
   pauseMpv (name) {
     superagent.put(`http://${name}.local:3000/api/mpv/pause`)
-      .accept('json')
-      .end((err, res) => { console.log(err, res); });
-  }
-
-  shutdown (name) {
-    superagent.put(`http://${name}.local:3000/api/system/shutdown`)
       .accept('json')
       .end((err, res) => { console.log(err, res); });
   }

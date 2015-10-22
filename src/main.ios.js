@@ -4,6 +4,7 @@ import React, { AppRegistry, Navigator, View, Text } from 'react-native';
 import NavBar from 'react-native-navbar';
 
 import colors from './components/colors';
+import { Toast } from './components/ui';
 import { MainPage } from './pages';
 
 class Furtive extends React.Component {
@@ -14,7 +15,7 @@ class Furtive extends React.Component {
     if (route.param) { route.param = route.param.replace(/ /g, '-'); }
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <NavBar title={route.title || 'Furtive'}
           route={route}
           navigator={navigator}
@@ -27,11 +28,14 @@ class Furtive extends React.Component {
 
   render () {
     return (
-      <Navigator
-        style={{backgroundColor:colors.base03}}
-        renderScene={this.renderScene}
-        initialRoute={{component: MainPage}}>
-      </Navigator>
+      <View style={{flex:1}}>
+        <Navigator
+          style={{backgroundColor:colors.base03}}
+          renderScene={this.renderScene}
+          initialRoute={{component: MainPage}}>
+        </Navigator>
+        <Toast />
+      </View>
     );
   }
 

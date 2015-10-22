@@ -39,7 +39,7 @@ export default class HostPage extends React.Component {
   }
 
   shutdown () {
-  
+    HostActions.shutdown(this.state.hostname);
   }
 
   say (str) {
