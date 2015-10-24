@@ -52,13 +52,6 @@ export default class HostPage extends React.Component {
   }
 
   /**
-   * Say str using OSX speech analysis
-   */
-  say (str) {
-    HostActions.say(this.state.hostname, str);
-  }
-
-  /**
    * Mute the host
    */
   mute () {
@@ -67,11 +60,12 @@ export default class HostPage extends React.Component {
 
   /**
    * Prompt for the say command
+   * Say str using OSX speech analysis
    */
-  promptSay () {
+  say () {
     AlertIOS.prompt('Say something', '', [
       { text: 'Cancel', },
-      { text: 'Say', onPress: this.say.bind(this) }
+      { text: 'Say', onPress: (str) => { HostActions.say(this.state.hostname, str); } }
     ]);
   }
 
@@ -102,7 +96,7 @@ export default class HostPage extends React.Component {
               )}
 
               {this.state.host.system === 'Darwin' && (
-                <TouchableHighlight onPress={::this.promptSay}
+                <TouchableHighlight onPress={::this.say}
                   underlayColor='transparent'
                   style={style.button}>
                   <Icon name='mic-c'

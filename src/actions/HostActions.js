@@ -45,6 +45,14 @@ class HostActions {
     };
   }
 
+  shutdownAll (hosts) {
+    hosts.forEach(host => {
+      this.actions.shutdown(host.replace(/ /g, '-'));
+    });
+
+    return null;
+  }
+
   mute (name) {
     return dispatch => {
       superagent.put(`http://${name}.local:3000/api/system/mute`)

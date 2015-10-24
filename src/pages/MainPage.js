@@ -4,11 +4,14 @@ import React, {
   View,
   ListView,
   Text,
-  StyleSheet
+  StyleSheet,
+  TouchableHighlight,
+  AlertIOS
 } from 'react-native';
 
 import Refreshable from 'react-native-refreshable-listview';
 import Bonjour from 'react-native-bonjour';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import colors from '../components/colors';
 import { HostStore } from '../stores';
@@ -66,18 +69,40 @@ export default class MainPage extends React.Component {
     this._bonjour.scan('furtive');
   }
 
+  /**
+   * Send the shutdown command to all hosts after prompt confirm
+   */
+  shutdown () {
+    AlertIOS.alert('Are you sure?', '', [
+      { text: 'Cancel', },
+      { text: 'Yes', onPress: () => { HostActions.shutdownAll(this.state.hosts); } }
+    ]);
+  }
+
   render () {
 
     const hasHost = !!this.state.dataSource._cachedRowCount;
 
     return (
-      <View style={styles.container}>
+      <View style={style.container}>
 
         {!hasHost && (
-          <Text style={styles.text}>No host found.</Text>
+          <Text style={[style.text, { marginTop: 10 }]}>No host found.</Text>
+        )}
+
+        {hasHost && (
+          <TouchableHighlight onPress={::this.shutdown} underlayColor='transparent'>
+            <View style={style.shutdown}>
+              <Text style={[style.text, { marginRight: 5, color: colors.base02 }]}>Shutdown all</Text>
+              <Icon name='flash-off'
+                size={20}
+                color={colors.base02}/>
+            </View>
+          </TouchableHighlight>
         )}
 
         <Refreshable
+          minBetweenTime={1e3}
           dataSource={this.state.dataSource}
           renderRow={data => <HostItem navigator={this.props.navigator} hostname={data}/>}
           loadData={::this.reloadHosts}
@@ -89,15 +114,26 @@ export default class MainPage extends React.Component {
 
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
+
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch'
   },
+
+  shutdown: {
+    flex: 1,
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: colors.red
+  },
+
   text: {
     color: colors.base2,
-    textAlign: 'center',
-    marginTop: 10
+    textAlign: 'center'
   }
+
 });
