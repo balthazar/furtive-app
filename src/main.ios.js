@@ -12,8 +12,6 @@ class Furtive extends React.Component {
   renderScene (route, navigator) {
     const Component = route.component;
 
-    if (route.param) { route.param = route.param.replace(/ /g, '-'); }
-
     return (
       <View style={{flex: 1}}>
         <NavBar title={route.title || 'Furtive'}

@@ -13,7 +13,8 @@ class HostStore {
 
     this.bindListeners({
       updateHosts: HostActions.updateHosts,
-      getInfos: HostActions.getInfos
+      getInfos: HostActions.getInfos,
+      cleanCurrent: HostActions.cleanCurrent
     });
   }
 
@@ -21,8 +22,13 @@ class HostStore {
     this.setState({ hosts });
   }
 
-  getInfos ({ data }) {
+  getInfos ({ name, data }) {
+    data.name = name;
     this.setState({ currentHost: data });
+  }
+
+  cleanCurrent () {
+    this.setState({ currentHost: null });
   }
 
 }

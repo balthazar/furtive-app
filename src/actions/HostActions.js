@@ -7,6 +7,10 @@ import ErrorActions from './ErrorActions';
 
 class HostActions {
 
+  cleanCurrent () {
+    return null;
+  }
+
   getInfos (name) {
     return dispatch => {
       superagent.get(`http://${name}.local:3000/api/system/infos`)

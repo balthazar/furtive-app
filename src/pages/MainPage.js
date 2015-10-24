@@ -63,7 +63,7 @@ export default class MainPage extends React.Component {
    * Reload the list manually
    */
   reloadHosts () {
-    HostActions.updateHosts(this._bonjour.getServices());
+    this._bonjour.scan('furtive');
   }
 
   render () {

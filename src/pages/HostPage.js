@@ -23,8 +23,9 @@ export default class HostPage extends React.Component {
   }
 
   componentWillMount () {
-    this.setState({ hostname: this.props.route.param });
-    HostActions.getInfos(this.props.route.param);
+    const hostname = this.props.route.param.replace(/ /g, '-');
+    this.setState({ hostname, route: this.props.route.param });
+    HostActions.getInfos(hostname);
   }
 
   componentDidMount () {
@@ -32,10 +33,14 @@ export default class HostPage extends React.Component {
   }
 
   componentWillUnmount () {
+    HostActions.cleanCurrent();
     HostStore.unlisten(this.hostStoreChange);
   }
 
   onChange (state) {
+    if (!_.includes(state.hosts, this.state.route)) {
+      this.props.navigator.pop();
+    }
     this.setState({ host: state.currentHost });
   }
 
