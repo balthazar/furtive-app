@@ -72,7 +72,7 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0b05225d6ab8243c3a85"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c86465e9e3fa8d7b078a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -15833,32 +15833,59 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	          _reactNative2['default'].createElement(
 	            _reactNative.View,
 	            { style: style.buttons },
-	            _reactNative2['default'].createElement(
-	              _reactNative.TouchableHighlight,
-	              { onPress: this.shutdown.bind(this),
-	                underlayColor: 'transparent',
-	                style: style.button },
-	              _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'flash-off',
-	                size: 20,
-	                color: _componentsColors2['default'].base2 })
-	            ),
 	            _lodash2['default'].includes(['Darwin', 'Linux'], this.state.host.system) && _reactNative2['default'].createElement(
 	              _reactNative.TouchableHighlight,
 	              { onPress: this.mute.bind(this),
-	                underlayColor: 'transparent',
-	                style: style.button },
-	              _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'volume-mute',
-	                size: 20,
-	                color: _componentsColors2['default'].base2 })
+	                underlayColor: 'transparent' },
+	              _reactNative2['default'].createElement(
+	                _reactNative.View,
+	                { style: style.button },
+	                _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'volume-mute',
+	                  size: 20,
+	                  color: _componentsColors2['default'].base2,
+	                  style: { marginRight: 5 } }),
+	                _reactNative2['default'].createElement(
+	                  _reactNative.Text,
+	                  { style: { color: _componentsColors2['default'].base2 } },
+	                  'Mute volume'
+	                )
+	              )
 	            ),
 	            this.state.host.system === 'Darwin' && _reactNative2['default'].createElement(
 	              _reactNative.TouchableHighlight,
 	              { onPress: this.say.bind(this),
-	                underlayColor: 'transparent',
-	                style: style.button },
-	              _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'mic-c',
-	                size: 20,
-	                color: _componentsColors2['default'].base2 })
+	                underlayColor: 'transparent' },
+	              _reactNative2['default'].createElement(
+	                _reactNative.View,
+	                { style: style.button },
+	                _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'mic-c',
+	                  size: 20,
+	                  color: _componentsColors2['default'].base2,
+	                  style: { marginRight: 5 } }),
+	                _reactNative2['default'].createElement(
+	                  _reactNative.Text,
+	                  { style: { color: _componentsColors2['default'].base2 } },
+	                  'Speech Synthesis'
+	                )
+	              )
+	            ),
+	            _reactNative2['default'].createElement(
+	              _reactNative.TouchableHighlight,
+	              { onPress: this.shutdown.bind(this),
+	                underlayColor: 'transparent' },
+	              _reactNative2['default'].createElement(
+	                _reactNative.View,
+	                { style: style.button },
+	                _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'flash-off',
+	                  size: 20,
+	                  color: _componentsColors2['default'].base2,
+	                  style: { marginRight: 5 } }),
+	                _reactNative2['default'].createElement(
+	                  _reactNative.Text,
+	                  { style: { color: _componentsColors2['default'].base2 } },
+	                  'Shutdown'
+	                )
+	              )
 	            )
 	          )
 	        )
@@ -15879,11 +15906,19 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	
 	  buttons: {
 	    flex: 1,
-	    flexDirection: 'row'
+	    flexDirection: 'column'
 	  },
 	
 	  button: {
-	    margin: 10
+	    margin: 10,
+	    paddingHorizontal: 10,
+	    paddingVertical: 5,
+	    backgroundColor: _componentsColors2['default'].base02,
+	    borderWidth: 0.5,
+	    borderColor: 'rgba(0, 0, 0, 0.3)',
+	    flex: 1,
+	    flexDirection: 'row',
+	    alignItems: 'center'
 	  },
 	
 	  container: {
@@ -31727,9 +31762,9 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	
 	var _reactNativeRefreshableListview2 = _interopRequireDefault(_reactNativeRefreshableListview);
 	
-	var _reactNativeBonjour = __webpack_require__(150);
+	var _reactNativeZeroconf = __webpack_require__(150);
 	
-	var _reactNativeBonjour2 = _interopRequireDefault(_reactNativeBonjour);
+	var _reactNativeZeroconf2 = _interopRequireDefault(_reactNativeZeroconf);
 	
 	var _reactNativeVectorIconsIonicons = __webpack_require__(110);
 	
@@ -31763,12 +31798,12 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	      }
 	    });
 	
-	    this._bonjour = new _reactNativeBonjour2['default']();
-	    this._bonjour.scan('furtive');
+	    this._zeroconf = new _reactNativeZeroconf2['default']();
+	    this._zeroconf.scan('furtive');
 	
-	    // Start the bonjour scan using the furtive protocol
-	    this._bonjour.on('update', function () {
-	      _actions.HostActions.updateHosts(_this._bonjour.getServices());
+	    // Start the zeroconf scan using the furtive protocol
+	    this._zeroconf.on('update', function () {
+	      _actions.HostActions.updateHosts(_this._zeroconf.getServices());
 	    });
 	
 	    // Might have to be changed
@@ -31807,7 +31842,7 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	  }, {
 	    key: 'reloadHosts',
 	    value: function reloadHosts() {
-	      this._bonjour.scan('furtive');
+	      this._zeroconf.scan('furtive');
 	    }
 	
 	    /**
@@ -32267,33 +32302,33 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	
 	var _events = __webpack_require__(151);
 	
-	var RNBonjour = _reactNative.NativeModules.RNBonjour;
+	var RNZeroconf = _reactNative.NativeModules.RNZeroconf;
 	
-	var Bonjour = (function (_EventEmitter) {
-	  _inherits(Bonjour, _EventEmitter);
+	var Zeroconf = (function (_EventEmitter) {
+	  _inherits(Zeroconf, _EventEmitter);
 	
-	  function Bonjour(props) {
+	  function Zeroconf(props) {
 	    var _this = this;
 	
-	    _classCallCheck(this, Bonjour);
+	    _classCallCheck(this, Zeroconf);
 	
-	    _get(Object.getPrototypeOf(Bonjour.prototype), 'constructor', this).call(this, props);
+	    _get(Object.getPrototypeOf(Zeroconf.prototype), 'constructor', this).call(this, props);
 	
 	    this._services = [];
 	
-	    _reactNative.DeviceEventEmitter.addListener('RNBonjourStart', function () {
+	    _reactNative.DeviceEventEmitter.addListener('RNZeroconfStart', function () {
 	      _this.emit('start');
 	    });
 	
-	    _reactNative.DeviceEventEmitter.addListener('RNBonjourStop', function () {
+	    _reactNative.DeviceEventEmitter.addListener('RNZeroconfStop', function () {
 	      _this.emit('stop');
 	    });
 	
-	    _reactNative.DeviceEventEmitter.addListener('RNBonjourError', function (err) {
+	    _reactNative.DeviceEventEmitter.addListener('RNZeroconfError', function (err) {
 	      _this.emit('error', err);
 	    });
 	
-	    _reactNative.DeviceEventEmitter.addListener('RNBonjourFound', function (name) {
+	    _reactNative.DeviceEventEmitter.addListener('RNZeroconfFound', function (name) {
 	      if (!name) {
 	        return;
 	      }
@@ -32302,7 +32337,7 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	      _this.emit('update');
 	    });
 	
-	    _reactNative.DeviceEventEmitter.addListener('RNBonjourRemove', function (name) {
+	    _reactNative.DeviceEventEmitter.addListener('RNZeroconfRemove', function (name) {
 	      var index = _this._services.indexOf(name);
 	      if (index !== -1) {
 	        _this._services.splice(index, 1);
@@ -32316,14 +32351,14 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	   * Get all the services already resolved
 	   */
 	
-	  _createClass(Bonjour, [{
+	  _createClass(Zeroconf, [{
 	    key: 'getServices',
 	    value: function getServices() {
 	      return this._services;
 	    }
 	
 	    /**
-	     * Scan for Bonjour services,
+	     * Scan for Zeroconf services,
 	     * Defaults to _http._tcp. on local domain
 	     */
 	  }, {
@@ -32335,7 +32370,7 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	
 	      this._services = [];
 	      this.emit('update');
-	      RNBonjour.scan(type, protocol, domain);
+	      RNZeroconf.scan(type, protocol, domain);
 	    }
 	
 	    /**
@@ -32344,14 +32379,14 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	  }, {
 	    key: 'stop',
 	    value: function stop() {
-	      RNBonjour.stop();
+	      RNZeroconf.stop();
 	    }
 	  }]);
 	
-	  return Bonjour;
+	  return Zeroconf;
 	})(_events.EventEmitter);
 	
-	exports['default'] = Bonjour;
+	exports['default'] = Zeroconf;
 	module.exports = exports['default'];
 
 /***/ },
