@@ -10,7 +10,7 @@ import React, {
 } from 'react-native';
 
 import Refreshable from 'react-native-refreshable-listview';
-import Bonjour from 'react-native-bonjour';
+import Zeroconf from 'react-native-zeroconf';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import colors from '../components/colors';
@@ -29,12 +29,12 @@ export default class MainPage extends React.Component {
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
 
-    this._bonjour = new Bonjour();
-    this._bonjour.scan('furtive');
+    this._zeroconf = new Zeroconf();
+    this._zeroconf.scan('furtive');
 
-    // Start the bonjour scan using the furtive protocol
-    this._bonjour.on('update', () => {
-      HostActions.updateHosts(this._bonjour.getServices());
+    // Start the zeroconf scan using the furtive protocol
+    this._zeroconf.on('update', () => {
+      HostActions.updateHosts(this._zeroconf.getServices());
     });
 
     // Might have to be changed
@@ -66,7 +66,7 @@ export default class MainPage extends React.Component {
    * Reload the list manually
    */
   reloadHosts () {
-    this._bonjour.scan('furtive');
+    this._zeroconf.scan('furtive');
   }
 
   /**

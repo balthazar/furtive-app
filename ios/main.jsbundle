@@ -72,7 +72,7 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "a28a2728d0a6396d97a4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0b05225d6ab8243c3a85"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -1585,10 +1585,6 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	    key: 'renderScene',
 	    value: function renderScene(route, navigator) {
 	      var Component = route.component;
-	
-	      if (route.param) {
-	        route.param = route.param.replace(/ /g, '-');
-	      }
 	
 	      return _reactNative2['default'].createElement(
 	        _reactNative.View,
@@ -15764,8 +15760,9 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	  _createClass(HostPage, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      this.setState({ hostname: this.props.route.param });
-	      _actions.HostActions.getInfos(this.props.route.param);
+	      var hostname = this.props.route.param.replace(/ /g, '-');
+	      this.setState({ hostname: hostname, route: this.props.route.param });
+	      _actions.HostActions.getInfos(hostname);
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -15775,32 +15772,48 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
+	      _actions.HostActions.cleanCurrent();
 	      _stores.HostStore.unlisten(this.hostStoreChange);
 	    }
 	  }, {
 	    key: 'onChange',
 	    value: function onChange(state) {
+	      if (!_lodash2['default'].includes(state.hosts, this.state.route)) {
+	        this.props.navigator.pop();
+	      }
 	      this.setState({ host: state.currentHost });
 	    }
+	
+	    /**
+	     * Shutdown the host
+	     */
 	  }, {
 	    key: 'shutdown',
 	    value: function shutdown() {
 	      _actions.HostActions.shutdown(this.state.hostname);
 	    }
-	  }, {
-	    key: 'say',
-	    value: function say(str) {
-	      _actions.HostActions.say(this.state.hostname, str);
-	    }
+	
+	    /**
+	     * Mute the host
+	     */
 	  }, {
 	    key: 'mute',
 	    value: function mute() {
 	      _actions.HostActions.mute(this.state.hostname);
 	    }
+	
+	    /**
+	     * Prompt for the say command
+	     * Say str using OSX speech analysis
+	     */
 	  }, {
-	    key: 'promptSay',
-	    value: function promptSay() {
-	      _reactNative.AlertIOS.prompt('Say something', '', [{ text: 'Cancel' }, { text: 'Say', onPress: this.say.bind(this) }]);
+	    key: 'say',
+	    value: function say() {
+	      var _this = this;
+	
+	      _reactNative.AlertIOS.prompt('Say something', '', [{ text: 'Cancel' }, { text: 'Say', onPress: function onPress(str) {
+	          _actions.HostActions.say(_this.state.hostname, str);
+	        } }]);
 	    }
 	  }, {
 	    key: 'render',
@@ -15822,18 +15835,30 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	            { style: style.buttons },
 	            _reactNative2['default'].createElement(
 	              _reactNative.TouchableHighlight,
-	              { onPress: this.shutdown.bind(this), underlayColor: 'transparent', style: style.button },
-	              _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'flash-off', size: 20, color: _componentsColors2['default'].base2 })
+	              { onPress: this.shutdown.bind(this),
+	                underlayColor: 'transparent',
+	                style: style.button },
+	              _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'flash-off',
+	                size: 20,
+	                color: _componentsColors2['default'].base2 })
 	            ),
 	            _lodash2['default'].includes(['Darwin', 'Linux'], this.state.host.system) && _reactNative2['default'].createElement(
 	              _reactNative.TouchableHighlight,
-	              { onPress: this.mute.bind(this), underlayColor: 'transparent', style: style.button },
-	              _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'volume-mute', size: 20, color: _componentsColors2['default'].base2 })
+	              { onPress: this.mute.bind(this),
+	                underlayColor: 'transparent',
+	                style: style.button },
+	              _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'volume-mute',
+	                size: 20,
+	                color: _componentsColors2['default'].base2 })
 	            ),
 	            this.state.host.system === 'Darwin' && _reactNative2['default'].createElement(
 	              _reactNative.TouchableHighlight,
-	              { onPress: this.promptSay.bind(this), underlayColor: 'transparent', style: style.button },
-	              _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'mic-c', size: 20, color: _componentsColors2['default'].base2 })
+	              { onPress: this.say.bind(this),
+	                underlayColor: 'transparent',
+	                style: style.button },
+	              _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'mic-c',
+	                size: 20,
+	                color: _componentsColors2['default'].base2 })
 	            )
 	          )
 	        )
@@ -28288,7 +28313,8 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	
 	    this.bindListeners({
 	      updateHosts: _actions.HostActions.updateHosts,
-	      getInfos: _actions.HostActions.getInfos
+	      getInfos: _actions.HostActions.getInfos,
+	      cleanCurrent: _actions.HostActions.cleanCurrent
 	    });
 	  }
 	
@@ -28300,9 +28326,16 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	  }, {
 	    key: 'getInfos',
 	    value: function getInfos(_ref) {
+	      var name = _ref.name;
 	      var data = _ref.data;
 	
+	      data.name = name;
 	      this.setState({ currentHost: data });
+	    }
+	  }, {
+	    key: 'cleanCurrent',
+	    value: function cleanCurrent() {
+	      this.setState({ currentHost: null });
 	    }
 	  }]);
 	
@@ -29958,6 +29991,11 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	  }
 	
 	  _createClass(HostActions, [{
+	    key: 'cleanCurrent',
+	    value: function cleanCurrent() {
+	      return null;
+	    }
+	  }, {
 	    key: 'getInfos',
 	    value: function getInfos(name) {
 	      return function (dispatch) {
@@ -29994,6 +30032,17 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	      };
 	    }
 	  }, {
+	    key: 'shutdownAll',
+	    value: function shutdownAll(hosts) {
+	      var _this = this;
+	
+	      hosts.forEach(function (host) {
+	        _this.actions.shutdown(host.replace(/ /g, '-'));
+	      });
+	
+	      return null;
+	    }
+	  }, {
 	    key: 'mute',
 	    value: function mute(name) {
 	      return function (dispatch) {
@@ -30005,27 +30054,25 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	        });
 	      };
 	    }
-	  }, {
-	    key: 'fetchMpvInfos',
-	    value: function fetchMpvInfos(name) {
-	      _superagent2['default'].get('http://' + name + '.local:3000/api/mpv/infos').accept('json').end(function (err, res) {
-	        console.log(err, res);
-	      });
+	
+	    /*
+	    fetchMpvInfos (name) {
+	      superagent.get(`http://${name}.local:3000/api/mpv/infos`)
+	        .accept('json')
+	        .end((err, res) => { console.log(err, res); });
 	    }
-	  }, {
-	    key: 'playMpv',
-	    value: function playMpv(name) {
-	      _superagent2['default'].put('http://' + name + '.local:3000/api/mpv/play').accept('json').end(function (err, res) {
-	        console.log(err, res);
-	      });
+	     playMpv (name) {
+	      superagent.put(`http://${name}.local:3000/api/mpv/play`)
+	        .accept('json')
+	        .end((err, res) => { console.log(err, res); });
 	    }
-	  }, {
-	    key: 'pauseMpv',
-	    value: function pauseMpv(name) {
-	      _superagent2['default'].put('http://' + name + '.local:3000/api/mpv/pause').accept('json').end(function (err, res) {
-	        console.log(err, res);
-	      });
+	     pauseMpv (name) {
+	      superagent.put(`http://${name}.local:3000/api/mpv/pause`)
+	        .accept('json')
+	        .end((err, res) => { console.log(err, res); });
 	    }
+	    */
+	
 	  }, {
 	    key: 'updateHosts',
 	    value: function updateHosts(hosts) {
@@ -31684,6 +31731,10 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	
 	var _reactNativeBonjour2 = _interopRequireDefault(_reactNativeBonjour);
 	
+	var _reactNativeVectorIconsIonicons = __webpack_require__(110);
+	
+	var _reactNativeVectorIconsIonicons2 = _interopRequireDefault(_reactNativeVectorIconsIonicons);
+	
 	var _componentsColors = __webpack_require__(104);
 	
 	var _componentsColors2 = _interopRequireDefault(_componentsColors);
@@ -31715,11 +31766,16 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	    this._bonjour = new _reactNativeBonjour2['default']();
 	    this._bonjour.scan('furtive');
 	
+	    // Start the bonjour scan using the furtive protocol
 	    this._bonjour.on('update', function () {
 	      _actions.HostActions.updateHosts(_this._bonjour.getServices());
 	    });
 	
-	    this.state.dataSource = lv.cloneWithRows(this.state.hosts);
+	    // Might have to be changed
+	    this.state = {
+	      dataSource: lv.cloneWithRows(this.state.hosts),
+	      hosts: this.state.hosts
+	    };
 	  }
 	
 	  _createClass(MainPage, [{
@@ -31732,6 +31788,10 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	    value: function componentWillUnMount() {
 	      _stores.HostStore.unlisten(this.onChange.bind(this));
 	    }
+	
+	    /**
+	     * When the list gets changed
+	     */
 	  }, {
 	    key: 'onChange',
 	    value: function onChange(state) {
@@ -31740,30 +31800,64 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	        hosts: state.hosts
 	      });
 	    }
+	
+	    /**
+	     * Reload the list manually
+	     */
 	  }, {
 	    key: 'reloadHosts',
 	    value: function reloadHosts() {
-	      _actions.HostActions.updateHosts(this._bonjour.getServices());
+	      this._bonjour.scan('furtive');
+	    }
+	
+	    /**
+	     * Send the shutdown command to all hosts after prompt confirm
+	     */
+	  }, {
+	    key: 'shutdown',
+	    value: function shutdown() {
+	      var _this2 = this;
+	
+	      _reactNative.AlertIOS.alert('Are you sure?', '', [{ text: 'Cancel' }, { text: 'Yes', onPress: function onPress() {
+	          _actions.HostActions.shutdownAll(_this2.state.hosts);
+	        } }]);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      var hasHost = !!this.state.dataSource._cachedRowCount;
 	
 	      return _reactNative2['default'].createElement(
 	        _reactNative.View,
-	        { style: styles.container },
+	        { style: style.container },
 	        !hasHost && _reactNative2['default'].createElement(
 	          _reactNative.Text,
-	          { style: styles.text },
+	          { style: [style.text, { marginTop: 10 }] },
 	          'No host found.'
 	        ),
+	        hasHost && _reactNative2['default'].createElement(
+	          _reactNative.TouchableHighlight,
+	          { onPress: this.shutdown.bind(this), underlayColor: 'transparent' },
+	          _reactNative2['default'].createElement(
+	            _reactNative.View,
+	            { style: style.shutdown },
+	            _reactNative2['default'].createElement(
+	              _reactNative.Text,
+	              { style: [style.text, { marginRight: 5, color: _componentsColors2['default'].base02 }] },
+	              'Shutdown all'
+	            ),
+	            _reactNative2['default'].createElement(_reactNativeVectorIconsIonicons2['default'], { name: 'flash-off',
+	              size: 20,
+	              color: _componentsColors2['default'].base02 })
+	          )
+	        ),
 	        _reactNative2['default'].createElement(_reactNativeRefreshableListview2['default'], {
+	          minBetweenTime: 1e3,
 	          dataSource: this.state.dataSource,
 	          renderRow: function (data) {
-	            return _reactNative2['default'].createElement(_componentsUi.HostItem, { navigator: _this2.props.navigator, hostname: data });
+	            return _reactNative2['default'].createElement(_componentsUi.HostItem, { navigator: _this3.props.navigator, hostname: data });
 	          },
 	          loadData: this.reloadHosts.bind(this),
 	          refreshingIndictatorComponent: _componentsUi.RefreshIndicator })
@@ -31776,17 +31870,28 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	
 	exports['default'] = MainPage;
 	
-	var styles = _reactNative.StyleSheet.create({
+	var style = _reactNative.StyleSheet.create({
+	
 	  container: {
 	    flex: 1,
 	    justifyContent: 'center',
 	    alignItems: 'stretch'
 	  },
+	
+	  shutdown: {
+	    flex: 1,
+	    padding: 5,
+	    alignItems: 'center',
+	    justifyContent: 'center',
+	    flexDirection: 'row',
+	    backgroundColor: _componentsColors2['default'].red
+	  },
+	
 	  text: {
 	    color: _componentsColors2['default'].base2,
-	    textAlign: 'center',
-	    marginTop: 10
+	    textAlign: 'center'
 	  }
+	
 	});
 	module.exports = exports['default'];
 
@@ -32189,6 +32294,9 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	    });
 	
 	    _reactNative.DeviceEventEmitter.addListener('RNBonjourFound', function (name) {
+	      if (!name) {
+	        return;
+	      }
 	      _this._services.push(name);
 	      _this.emit('found', name);
 	      _this.emit('update');
@@ -32225,6 +32333,8 @@ m.AssetTypeOptions=h,n.exports=m}),__d("ImagePickerIOS",["NativeModules"],functi
 	      var protocol = arguments.length <= 1 || arguments[1] === undefined ? 'tcp' : arguments[1];
 	      var domain = arguments.length <= 2 || arguments[2] === undefined ? 'local.' : arguments[2];
 	
+	      this._services = [];
+	      this.emit('update');
 	      RNBonjour.scan(type, protocol, domain);
 	    }
 	
